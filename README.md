@@ -21,7 +21,7 @@ The template syntax is quite simple, it uses double brackets to mark tokens:
 
 ## Token definition
 
-The template directory should contain a file named `.3s` with contains lines of `key:value`:
+The template directory should contain a file named `.3s` with contains lines of `key:value` pairs:
 ```
 name:My Simple Website
 ```
@@ -33,5 +33,5 @@ name:My Simple Website
 $ ./3s /path/to/input /path/to/output
 ```
 
-It will create the ewquired directories and copy all html, css, js, png and jpg files into a new tree.
-It will replace tokens only in html files.
+3s will copy all non hidden files to the new directory and recreate the original directory structure.
+Tokens in HTML files will then be changed in place.
