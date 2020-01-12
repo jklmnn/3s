@@ -4,19 +4,15 @@ IN=$1
 OUT=$2
 
 echo "3s - static site (with) sed"
-for asset in js css png jpg
+for file in $(find $IN -type f -not -path '*/\.*')
 do
-    for file in $(find $IN -name "*.$asset")
-    do
-        echo Copy: $(sed "s#$IN#$OUT#" <<< $file)
-        mkdir -vp $(sed "s#$IN#$OUT#;s#/[^/]*.$asset##g" <<< $file)
-        cp $file $(sed "s#$IN#$OUT#g" <<< $file)
-    done
+    echo Copy: $(sed "s#$IN#$OUT#" <<< $file)
+    mkdir -vp $(sed "s#$IN#$OUT#;s#/[^/]*.\$##g" <<< $file)
+    cp $file $(sed "s#$IN#$OUT#g" <<< $file)
 done
 for file in $(find $IN -name "*.html")
 do
     echo Generate: $(sed "s#$IN#$OUT#" <<< $file)
-    mkdir -vp $(sed "s#$IN#$OUT#;s#/[^/]*.html##g" <<< $file)
     outfile=$(sed "s#$IN#$OUT#" <<< $file)
     cmd=""
     for key in $(cat $IN/.3s | cut -d":" -f1)
@@ -24,5 +20,5 @@ do
         value=$(cat $IN/.3s | grep "^$key" | cut -d":" -f2)
         cmd=$cmd"s/{{$key}}/$value/g;"
     done
-    sed "$cmd" $file > $outfile
+    sed -i "$cmd" $outfile
 done
