@@ -11,7 +11,7 @@ cmd=""
 for key in $(cat $IN/.3s | cut -d":" -f1)
 do
     value=$(cat $IN/.3s | grep "^$key" | cut -d":" -f2)
-    cmd=$cmd"s/{{$key}}/$value/;"
+    cmd=$cmd"s/{{$key}}/$value/g;"
 done
 for file in $(find $IN -type f -not -path '*/\.*')
 do
